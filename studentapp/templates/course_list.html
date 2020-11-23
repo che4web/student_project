@@ -1,19 +1,18 @@
 {% extends 'base.html'%}
 {% load static %}
-{%block title%}    
-Список Студентов
-{%endblock%}
-{%block content%}    
-{% for student in student_list%}
+{%block content %}
+
+<div> вы искали: {{request.GET.search}}</div>
+{% for cours in course_list%}
 <div class="article">
     <div class="row">
-        <div class="col-md-12"> <h2>{{student.name}} <span class="small"> {{student.group.name}}</span></h2></div>
+        <div class="col-md-12"> <h2>{{cours.name}}  {{cours.get_max_score.score}}</h2></div>
     </div>
     <hr>
     <div class="row">
         <div class="col-md-12"> 
             <ul>
-                {%for mark in student.mark_set.all %}
+                {%for mark in cours.mark_set.all %}
                 <li>{{mark}}</li>
                 {%endfor%}
             </ul>

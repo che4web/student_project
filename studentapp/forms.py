@@ -9,7 +9,6 @@ class BootstapForm(forms.Form):
 
 class SearchForm(BootstapForm):
     search = forms.CharField(label='Имя студента', max_length=100)
-    student_id= forms.IntegerField(label='id Стeднетa',required=False)
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
