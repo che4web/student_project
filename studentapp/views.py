@@ -10,7 +10,7 @@ def index(request):
 
     form_student = StudentForm()
     context = {'form':form}
-    context = {'form_student':form_student}
+    context['from_student'] = {'form_student':form_student}
     if form.is_valid():
         search = form.cleaned_data['search']
         student_id= form.cleaned_data['student_id']
@@ -20,5 +20,6 @@ def index(request):
             context['student_list'] = Student.objects.filter(id=student_id)
     else:
         context['error'] = form.errors
+        context['student_list'] = Student.objects.all()
 
     return render(request,'index.html',context)
