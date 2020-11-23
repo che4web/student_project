@@ -2,6 +2,7 @@ from django.shortcuts import render
 from studentapp.models import Student,Course
 from studentapp.forms import SearchForm,StudentForm
 from django.db.models import Max
+from django.views.generic import DetailView,ListView
 # Create your views here.
 def index(request):
     if request.GET:
@@ -21,19 +22,14 @@ def index(request):
 
     return render(request,'index.html',context)
 
-def course_list(request):
-    if request.GET:
-        form = SearchForm(request.GET)
-    else:
-        form = SearchForm()
-    context = {'form':form}
-    course_list =   Course.objects.all()
-    if form.is_valid():
-        search = form.cleaned_data['search']
-        course_list = course_list.filter(name__icontains=search)
-    else:
-        context['error'] = form.errors
-    context['course_list'] = course_list
+class CourseList(ListView):
+    model = Course
+    paginate_by = 1
 
-    return render(request,'course_list.html',context)
+class CourseDetail(DetailView):
+    model = Course
 
+    def get_context_data(self,*args,**kwargs):
+        context = super().get_context_data(*args,**kwargs)
+        context['add_vart'] ="traa tata "
+        return context
