@@ -1,0 +1,29 @@
+{% extends 'base.html'%}
+{% load static %}
+{%block content %}
+
+<div class="article">
+    <div class="row">
+        <div class="col-md-12">  <h2>{{object.name}}  {{course.get_max_score.score}}</h2></div>
+    </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12"> 
+            <ul>
+                {%for mark in object.mark_set.all %}
+                <li>{{mark}}</li>
+                {%endfor%}
+            </ul>
+        </div>
+    </div>
+    <hr>
+    <h2> список курсов </h2>
+<div class="row">
+    {% for cours in object.course.all%}
+        {%include 'studentapp/course_list_part_1.html'%}
+    {%endfor%}
+</div>
+
+</div>
+{%endblock%}

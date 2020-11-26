@@ -7,7 +7,8 @@
 {% for student in student_list%}
 <div class="article">
     <div class="row">
-        <div class="col-md-12"> <h2>{{student.name}} <span class="small"> {{student.group.name}}</span></h2></div>
+        <div class="col-md-12"> <h2> <a href="{% url 'student-detail' pk=student.id %}">{{student.id}} </a>
+                                     <a href="{{student.get_absolute_url}}">{{student.name}} </a><span class="small"> {{student.group.name}}</span></h2></div>
     </div>
     <hr>
     <div class="row">

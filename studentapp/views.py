@@ -33,3 +33,6 @@ class CourseDetail(DetailView):
         context = super().get_context_data(*args,**kwargs)
         context['add_vart'] ="traa tata "
         return context
+
+class StudentDetail(DetailView):
+    model = Student

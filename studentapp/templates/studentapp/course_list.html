@@ -5,25 +5,12 @@
 <div> вы искали: {{request.GET.search}}</div>
 <div class="row">
     {% for cours in course_list%}
-    <div class="col-lg-4 col-md-6 col-sm-12">
-        <b> номер итерации {{forloop.counter0}}</b>
-        <div class="article">
-            <div class="row">
-                <div class="col-md-12"> <h2>{{cours.name}}  {{cours.get_max_score.score}}</h2></div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-12"> 
-                    <ul>
-                        {%for mark in cours.mark_set.all %}
-                        <li>{{mark}}</li>
-                        {%endfor%}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-        {%endfor%}
+    {%if forloop.counter0|divisibleby:2%}
+        {%include 'studentapp/course_list_part_1.html'%}
+    {%else%}
+        {%include 'studentapp/course_list_part_2.html'%}
+    {%endif%}
+    {%endfor%}
 </div>
 {% if is_paginated %}
 <div class="pagination">

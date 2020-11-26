@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 # Create your models here.
 
 class CommonInfo(models.Model):
@@ -11,10 +11,17 @@ class CommonInfo(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=255,verbose_name="Название группы")
 
+class Course(models.Model):
+    name = models.CharField(max_length=255,verbose_name="Название предмета")
+    def get_max_score(self):
+        return self.mark_set.all().order_by('-score').first()
 
 
 class Student(CommonInfo):
     group = models.ForeignKey(Group,on_delete=models.PROTECT)
+    course = models.ManyToManyField(Course)
+    def get_absolute_url(self):
+        return reverse('student-detail',kwargs={'pk':self.id})
     def __str__(self):
         return 'Студент '+self.name
 
@@ -27,11 +34,6 @@ class Proffessor(CommonInfo):
         return "Профессор" + self.name
 
 
-class Course(models.Model):
-    name = models.CharField(max_length=255,verbose_name="Название предмета")
-
-    def get_max_score(self):
-        return self.mark_set.all().order_by('-score').first()
 
 class Mark(models.Model):
     course = models.ForeignKey(Course,on_delete=models.CASCADE)
