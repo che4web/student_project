@@ -24,7 +24,7 @@ def index(request):
 
 class CourseList(ListView):
     model = Course
-    paginate_by = 1
+    paginate_by = 10
 
 class CourseDetail(DetailView):
     model = Course

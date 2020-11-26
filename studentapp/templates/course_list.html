@@ -2,22 +2,28 @@
 {% load static %}
 {%block content %}
 
-<div> вы искали: {{request.GET.search}}</div>
-{% for cours in course_list%}
-<div class="article">
-    <div class="row">
-        <div class="col-md-12"> <h2>{{cours.name}}  {{cours.get_max_score.score}}</h2></div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12"> 
-            <ul>
-                {%for mark in cours.mark_set.all %}
-                <li>{{mark}}</li>
-                {%endfor%}
-            </ul>
+<div>
+    вы искали: {{request.GET.search}}
+</div>
+<div class="row">
+    {% for cours in course_list%}
+    <div class="col-4">
+        <div class="article">
+            <div class="row">
+                <div class="col-md-12"> <h2>{{cours.name}}  {{cours.get_max_score.score}}</h2></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12"> 
+                    <ul>
+                        {%for mark in cours.mark_set.all %}
+                        <li>{{mark}}</li>
+                        {%endfor%}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
+    {%endfor%}
 </div>
-{%endfor%}
 {%endblock%}
