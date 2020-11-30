@@ -3,6 +3,7 @@ from studentapp.models import Student,Course
 from studentapp.forms import SearchForm,StudentForm
 from django.db.models import Max
 from django.views.generic import DetailView,ListView
+from django.http import JsonResponse
 # Create your views here.
 def index(request):
     if request.GET:
@@ -21,6 +22,24 @@ def index(request):
         context['student_list'] = Student.objects.all()
 
     return render(request,'index.html',context)
+def student_json(request):
+    if request.GET:
+        form = SearchForm(request.GET)
+    else:
+        form = SearchForm()
+
+    form_student = StudentForm()
+    if form.is_valid():
+        search = form.cleaned_data['search']
+        queryset = Student.objects.filter(name__icontains=search)
+    else:
+        queryset = Student.objects.all()
+    student_list = list(queryset.values('id','name'))
+
+    return JsonResponse(student_list,safe=False)
+
+
+
 
 class CourseList(ListView):
     model = Course

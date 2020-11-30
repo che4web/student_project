@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index),
+    path('api/student/', views.student_json),
     path('course/<int:pk>/', views.CourseDetail.as_view(),name="course-detail"),
     path('course/', views.CourseList.as_view(),name="course-list",),
     path('student/<int:pk>/', views.StudentDetail.as_view(),name="student-detail"),

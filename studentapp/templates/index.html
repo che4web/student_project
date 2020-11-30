@@ -5,9 +5,12 @@
 {%endblock%}
 {%block content%}    
 {% for student in student_list%}
-<div class="article">
-    <div class="row">
-        <div class="col-md-12"> <h2> <a href="{% url 'student-detail' pk=student.id %}">{{student.id}} </a>
+<div class="article" id="student-id-{{student.id}}" onclick="console.log('click on article')">
+    <div class="row" onclick="console.log('click on row')">
+        <div class="col-md-12" onclick="event.stopPropagation() ;console.log('click on col')">
+            
+<h2 class="btn btn-primary" id="button-id-{{student.id}}" onclick="console.log(this.id) " >   нажми меня</h2>
+            <h2> <a  onclick="event.preventDefault();return false" href="{% url 'student-detail' pk=student.id %}">{{student.id}} </a>
                                      <a href="{{student.get_absolute_url}}">{{student.name}} </a><span class="small"> {{student.group.name}}</span></h2></div>
     </div>
     <hr>
@@ -22,4 +25,13 @@
     </div>
 </div>
 {%endfor%}
+<script>
+  var updateList = function(query){
+      $.get('/api/student/').done(function(data){
+        $('#ajax').html = data
+      })
+    }
+
+</script>
 {%endblock%}
+
