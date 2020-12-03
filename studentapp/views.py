@@ -82,7 +82,7 @@ def post_mark(request):
     checkpoint  = request.POST.get('checkpoint')
     student  = request.POST.get('student')
     mark,created =  Mark.objects.get_or_create(student_id=student,checkpoint_id =checkpoint)
-    mark.score=score*2
+    mark.score=score
     mark.save()
     res = {
         'student':mark.student.id,

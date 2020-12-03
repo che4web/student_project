@@ -10,6 +10,7 @@
 <hr>
 <div class="row">
     <div class="col-md-12"> 
+<div id="app">
         <table>
             <thead>
                 <tr>
@@ -28,28 +29,63 @@
                     <td> {{student.name}}</td>
                     {%for mark in student.mark_data %}
                     <td> 
-                        <input student="{{student.id}}" checkpoint="{{mark.checkpoint.id}}" class="mark checkpoint-{{mark.checkpoint.id}}" value="{{mark.score }}"> 
+                        <mark-score :student="{{student.id}}" :checkpoint="{{mark.checkpoint.id}}"></mark-score>
                     </td>
                     {%endfor%}
                 </tr>
                 {%endfor%}
             </tbody>
         </table>
-        {%verbatium%}
-<div id="app">
-  {{ message }}
+        {%verbatim%}
+    <input v-model="message">
+  <div> <b>{{ message*12 }}</b></div>
+    <input v-model="student">
+    <input v-model="checkpoint">
+
 </div>
-        {%endverbatium%}
+</div>
+        {%endverbatim%}
     </div>
 </div>
 </div>
 
 <script>
+Vue.component('mark-score', {
+  props: ['student','checkpoint'],
+  data:function(){
+      return{
+        score:0,
+        isLoadin:false,
+      }
+  },
+    methods:{
+        postData(){
+            this.isLoadin=true
+                $.post('/api/post_mark/',{
+                    score:this.score,
+                    student:this.student,
+                    checkpoint:this.checkpoint,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                }).done((response)=>{
+                    this.isLoadin=false
+                    this.score =response.score
+                })
+        },
+    },
+    watch:{
+        score(){this.postData()}
+    },
+    template: `<div><input v-model="score" :class="isLoadin? 'alert-danger':'alert-sucess'"> <b v-html="score"></b> </div>`
+    })
+
 var app = new Vue({
   el: '#app',
   data: {
-    message: 'Привет, Vue!'
-  }
+    message: 0,
+    score:'',
+    student:'',
+    checkpoint:'',
+  },
 })
 </script>
 <script>
