@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from studentapp.models import Student,Course
+from studentapp.models import Student,Course,Mark
 from studentapp.forms import SearchForm,StudentForm
 from django.db.models import Max
 from django.views.generic import DetailView,ListView
@@ -54,8 +54,65 @@ class CourseDetail(DetailView):
 
     def get_context_data(self,*args,**kwargs):
         context = super().get_context_data(*args,**kwargs)
-        context['add_vart'] ="traa tata "
+        course = self.get_object()
+        student_list = course.student_set.all()
+        checkpoint_list = course.checkpoint_set.all()
+        table = []
+        for student in student_list:
+            mark_data = []
+            for checkpoint in checkpoint_list:
+                mark = student.mark_set.filter(checkpoint=checkpoint)
+                if mark.exists():
+                    score = mark.first()
+                else:
+                    score = Mark(checkpoint=checkpoint,student=student)
+                mark_data.append(score)
+            table.append({'name':student.name,
+                          'id':student.id,
+                          'mark_data':mark_data})
+
+
+
+        context['table'] = table
+        context['checkpoint_list'] = checkpoint_list
         return context
+
+def post_mark(request):
+    score = request.POST.get('score')
+    checkpoint  = request.POST.get('checkpoint')
+    student  = request.POST.get('student')
+    mark,created =  Mark.objects.get_or_create(student_id=student,checkpoint_id =checkpoint)
+    mark.score=score*2
+    mark.save()
+    res = {
+        'student':mark.student.id,
+        'checkpoint':mark.checkpoint.id,
+        'score':mark.score,
+        'date':mark.date,
+           }
+    return JsonResponse(res,safe=False)
+
+def post_mark2(request):
+    score = request.POST.get('score')
+    checkpoint  = request.POST.get('checkpoint')
+
+    checkpoint =  Checkpoint.objects.get(id=checkpoint)
+    res = []
+    for student in  checkpoint.course.student.all():
+        mark,created =  Mark.objects.get_or_create(student=student,checkpoint_id =checkpoint)
+        mark.score=score*2
+        mark.save()
+        data = {
+            'student':mark.student.id,
+            'checkpoint':mark.checkpoint.id,
+            'score':mark.score,
+            'date':mark.date,
+           }
+
+        res.append(data)
+    return JsonResponse(res,safe=False)
+
+
 
 class StudentDetail(DetailView):
     model = Student

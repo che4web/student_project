@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+REQUEST_TIME_DELAY=1
+
+
 
 # Application definition
 

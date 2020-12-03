@@ -13,9 +13,18 @@ class Group(models.Model):
 
 class Course(models.Model):
     name = models.CharField(max_length=255,verbose_name="Название предмета")
-    def get_max_score(self):
-        return self.mark_set.all().order_by('-score').first()
 
+    def get_absolute_url(self):
+        return reverse('course-detail',kwargs={'pk':self.id})
+    def __str__(self):
+        return 'Предмет:  '+self.name
+    def get_max_score(self):
+        return  0 #self.mark_set.all().order_by('-score').first()
+
+class Checkpoint(models.Model):
+    name = models.CharField(max_length=255,verbose_name="Название работы")
+    desc = models.CharField(max_length=255,verbose_name="описание")
+    course = models.ForeignKey(Course,on_delete=models.CASCADE)
 
 class Student(CommonInfo):
     group = models.ForeignKey(Group,on_delete=models.PROTECT)
@@ -36,10 +45,11 @@ class Proffessor(CommonInfo):
 
 
 class Mark(models.Model):
-    course = models.ForeignKey(Course,on_delete=models.CASCADE)
+    checkpoint = models.ForeignKey(Checkpoint,on_delete=models.CASCADE,null=True)
     student = models.ForeignKey(Student,on_delete=models.CASCADE)
-    score =  models.IntegerField()
+    score =  models.IntegerField(default=0,blank=True)
+    date = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
-        return "{}, {}".format(self.course.name,self.score)
+        return "{}, {}".format(self.id,self.score)

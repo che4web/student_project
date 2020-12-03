@@ -4,20 +4,89 @@
 
 <div class="article">
     <div class="row">
-        <div class="col-md-12"> переменнаая course <h2>{{course.name}}  {{course.get_max_score.score}}</h2></div>
-    <div class="row">
-        <div class="col-md-12">  переменная object<h2>{{object.name}}  {{course.get_max_score.score}}</h2></div>
-    </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12"> 
-            <ul>
-                {%for mark in course.mark_set.all %}
-                <li>{{mark}}</li>
-                {%endfor%}
-            </ul>
-        </div>
+        <div class="col-md-12"> <h2>{{course.name}}  {{course.get_max_score.score}}</h2></div>
     </div>
 </div>
+<hr>
+<div class="row">
+    <div class="col-md-12"> 
+        <table>
+            <thead>
+                <tr>
+                    <th>Фамилия </th>
+                    {%for checkpoint in checkpoint_list %}
+                    <td> 
+                        {{checkpoint.name }}
+                        <input class="mark-all" checkpoint="{{checkpoint.id}}">
+                    </td>
+                    {%endfor%}
+                </tr>
+            </thead>
+            <tbody>
+                {%for student in table%}
+                <tr>
+                    <td> {{student.name}}</td>
+                    {%for mark in student.mark_data %}
+                    <td> 
+                        <input student="{{student.id}}" checkpoint="{{mark.checkpoint.id}}" class="mark checkpoint-{{mark.checkpoint.id}}" value="{{mark.score }}"> 
+                    </td>
+                    {%endfor%}
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        {%verbatium%}
+<div id="app">
+  {{ message }}
+</div>
+        {%endverbatium%}
+    </div>
+</div>
+</div>
+
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Привет, Vue!'
+  }
+})
+</script>
+<script>
+
+    $('input.mark-all').on('input',function(event){
+        let checkpoint =  this.getAttribute('checkpoint')
+        let score =  this.value
+        $.post('/api/post_mark2/',{
+                score,
+                checkpoint,
+        }).done(function(response){
+            let input_list = ('input.mark.checkpoint-'+checkpoint).
+            for(let i=0;i<response.length;i++){
+                for(let i=0;i<response.length;i++){
+                    if
+                    input_list[i].value= data[i].score
+                }
+            }
+            
+        })
+        
+    })
+    
+    $('input.mark').on('input',function(event){
+        let score =  this.value
+        let student =  this.getAttribute('student')
+        let checkpoint =  this.getAttribute('checkpoint')
+        this.classList.add("alert-danger");
+        that =this
+        $.post('/api/post_mark/',{
+                score,
+                student,
+                checkpoint,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+        }).done(function(){
+            that.classList.remove("alert-danger");
+        })
+    })
+</script>
 {%endblock%}

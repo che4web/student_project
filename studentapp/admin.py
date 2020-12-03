@@ -1,5 +1,5 @@
 from django.contrib import admin
-from studentapp.models import Student,Proffessor,Group,Course,Mark
+from studentapp.models import Student,Proffessor,Group,Course,Mark,Checkpoint
 # Register your models here.
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
@@ -13,10 +13,15 @@ class ProfessorAdmin(admin.ModelAdmin):
 class GroupAdmin(admin.ModelAdmin):
     pass
 
+class CheckpointInline(admin.TabularInline):
+    model = Checkpoint
+
 @admin.register(Course)
-class GroupAdmin(admin.ModelAdmin):
-    pass
+class CourseAdmin(admin.ModelAdmin):
+    inlines=[
+        CheckpointInline
+    ]
 
 @admin.register(Mark)
-class GroupAdmin(admin.ModelAdmin):
+class MarkAdmin(admin.ModelAdmin):
     pass
