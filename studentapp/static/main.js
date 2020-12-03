@@ -1,7 +1,9 @@
   var updateList = function(query){
-      $.get('/api/student/').done(function(data){
+      let q = $('#id_search').val()
+      let offset = $('#my_div').children().length
+
+      $.get('/api/student/',{search:q,offset}).done(function(data){
           console.log(data)
-          $('my_div').empty('')
           for(let item of data){
               $('#my_div').append( `<div class="article" id="" >
                                         <div class="row ">
@@ -16,4 +18,5 @@
       })
     }
   $('#my_button').click(updateList)
+  $(document).on('scroll',updateList)
 

@@ -35,8 +35,12 @@ def student_json(request):
     else:
         queryset = Student.objects.all()
     student_list = list(queryset.values('id','name'))
-
-    return JsonResponse(student_list,safe=False)
+    offset = form.cleaned_data['offset']
+    if offset:
+        offset = int(offset)
+    else:
+        offset= 0
+    return JsonResponse(student_list[offset:offset+2],safe=False)
 
 
 

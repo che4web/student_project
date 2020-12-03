@@ -6,26 +6,6 @@
 {%block content%}    
 <button class="btn btn-primary" id="my_button" >   нажми меня</button>
 <div id="my_div"></div>
-{% for student in student_list%}
-<div class="article" id="student-id-{{student.id}}" >
-    <div class="row ">
-        <div class="col-md-12" >
-            
-            <h2> <a  onclick="event.preventDefault();return false" href="{% url 'student-detail' pk=student.id %}">{{student.id}} </a>
-                                     <a href="{{student.get_absolute_url}}">{{student.name}} </a><span class="small"> {{student.group.name}}</span></h2></div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12"> 
-            <ul>
-                {%for mark in student.mark_set.all %}
-                <li>{{mark}}</li>
-                {%endfor%}
-            </ul>
-        </div>
-    </div>
-</div>
-{%endfor%}
 <script src="/static/main.js">
 {%endblock%}
 

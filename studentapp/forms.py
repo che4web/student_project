@@ -9,6 +9,7 @@ class BootstapForm(forms.Form):
 
 class SearchForm(BootstapForm):
     search = forms.CharField(label='Имя студента', max_length=100)
+    offset = forms.CharField(label='отступ', max_length=100,required=False)
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
