@@ -1,0 +1,11 @@
+{% extends 'base.html'%}
+{% load static %}
+{%block title%}    
+Список Студентов
+{%endblock%}
+{%block content%}    
+<button class="btn btn-primary" id="my_button" >   нажми меня</button>
+<div id="my_div"></div>
+<script src="/static/main.js">
+{%endblock%}
+
